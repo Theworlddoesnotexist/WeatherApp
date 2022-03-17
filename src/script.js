@@ -27,7 +27,7 @@ app = document.getElementById("app");
 
 const apiKey = 'f118a5b6dd763ad9ec7c87bb8b72aade';
 
-const cities = {coyhaique: ['-45.571224','-72.068268'],santiago: ['-33.416889','-70.606705']};
+const cities = {coyhaique: ['-45.571224','-72.068268'],santiago: ['-33.416889','-70.606705'],iquique:['-20.21326','-70.15027']};
 console.log(cities.coyhaique[0])
 
 const getWeather = async (lat,lon) => {
@@ -36,11 +36,35 @@ const getWeather = async (lat,lon) => {
   const wheaterJson = await res.json();
   //functi
   createCard(wheaterJson);
+  setStyle(wheaterJson.weather[0]);
 };
+
+function setStyle(info){
+  const root = document.querySelector(':root');
+  let weather = info.description;
+  console.log(weather)
+  if (weather == 'muy nuboso'){
+    document.getElementsByTagName("body")[0].style = "background-image:url('https://images.unsplash.com/photo-1535312720515-ea9a756100ef?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80')"
+    root.style.setProperty('--clr-accent','#f0b596');
+  }
+  if (weather == 'muy nu'){
+    document.getElementsByTagName("body")[0].style = "background-image:url('https://www.ngenespanol.com/wp-content/uploads/2018/08/La-primera-imagen-de-la-historia.jpg')"
+    root.style.setProperty('--clr-accent','#eccfa1');
+  }
+  if(weather == 'niebla'){
+    document.getElementsByTagName("body")[0].style = "background-image:url('https://images.unsplash.com/photo-1536393350242-a66a98748b5c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80')"
+    root.style.setProperty('--clr-accent','#898A9E');
+  }
+  if (weather == 'nubes dispersas'){
+    document.getElementsByTagName("body")[0].style = "background-image:url('https://images.unsplash.com/photo-1644414889311-614c8c7224fb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80')"
+    root.style.setProperty('--clr-accent','#a1c5ec');
+  }
+}
 
 function createCard(info){
   console.log(info);
   let weather = info.weather[0];
+  console.log(weather.main);
 
   app.innerHTML = `
       <h1 class="main-title">Ultimo clima en ${info.name}</h1>
@@ -85,6 +109,9 @@ console.log(date())
 
 
 getWeather(cities.santiago[0],cities.santiago[1]);
+//getWeather(cities.coyhaique[0],cities.coyhaique[1]);
+//getWeather(cities.iquique[0],cities.iquique[1]);
+
 
 //un Buscador que devuelva latitud y long
 //
