@@ -16,8 +16,6 @@ document.getElementById("app").innerHTML = `
       <h2 class="third-title"> Wind</h2>
       <p class="reading"> 75kph</p>
       <div class="wind-direction">
-	<p class="sr-only"></p>
-	<div class="wind-arrow"></div>
       </div>
     </div>
     <div class="info">
@@ -27,8 +25,10 @@ app = document.getElementById("app");
 
 const apiKey = 'f118a5b6dd763ad9ec7c87bb8b72aade';
 
-const cities = {coyhaique: ['-45.571224','-72.068268'],santiago: ['-33.416889','-70.606705'],iquique:['-20.21326','-70.15027']};
-console.log(cities.coyhaique[0])
+const cities = {coyhaique: ['-45.571224','-72.068268','https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1b/ea/e9/b8/caption.jpg?w=300&h=300&s=1'],
+  santiago: ['-33.416889','-70.606705','https://en.wikiarquitectura.com/wp-content/uploads/2017/01/Costanera_center_6.jpg'],
+  iquique:['-20.21326','-70.15027','https://vulcanopro.s3.amazonaws.com/images/lar_ldy7cyWrE71rwO8wHNqvG9hE7DAQVUdzCkmArHPe.jpeg'],
+  valdivia:['-39.819588','-73.245209','https://storage.googleapis.com/chile-travel-newsite-static-content/2021/07/Encantos_Valdivia-y-Corral_mercado-fluvialjpg-1024x683.jpg']};
 
 const getWeather = async (lat,lon) => {
   const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&lang=sp&appid=${apiKey}`;
@@ -46,18 +46,22 @@ function setStyle(info){
   if (weather == 'muy nuboso'){
     document.getElementsByTagName("body")[0].style = "background-image:url('https://images.unsplash.com/photo-1535312720515-ea9a756100ef?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80')"
     root.style.setProperty('--clr-accent','#f0b596');
+    document.getElementById('image').src="https://www.amcharts.com/wp-content/themes/amcharts4/css/img/icons/weather/animated/cloudy.svg";
   }
-  if (weather == 'muy nu'){
+  if (weather == 'nubes'){
     document.getElementsByTagName("body")[0].style = "background-image:url('https://www.ngenespanol.com/wp-content/uploads/2018/08/La-primera-imagen-de-la-historia.jpg')"
     root.style.setProperty('--clr-accent','#eccfa1');
+    document.getElementById('image').src="https://www.amcharts.com/wp-content/themes/amcharts4/css/img/icons/weather/animated/cloudy-day-2.svg";
   }
   if(weather == 'niebla'){
     document.getElementsByTagName("body")[0].style = "background-image:url('https://images.unsplash.com/photo-1536393350242-a66a98748b5c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80')"
     root.style.setProperty('--clr-accent','#898A9E');
+    document.getElementById('image').src="https://www.amcharts.com/wp-content/themes/amcharts4/css/img/icons/weather/animated/cloudy-night-1.svg";
   }
   if (weather == 'nubes dispersas'){
     document.getElementsByTagName("body")[0].style = "background-image:url('https://images.unsplash.com/photo-1644414889311-614c8c7224fb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80')"
     root.style.setProperty('--clr-accent','#a1c5ec');
+    document.getElementById('image').src="https://www.amcharts.com/wp-content/themes/amcharts4/css/img/icons/weather/animated/cloudy-day-1.svg";
   }
 }
 
@@ -83,7 +87,7 @@ function createCard(info){
 	<h2 class="third-title"> Wind</h2>
 	<p class="reading"> ${info.wind['speed']}kph</p>
 	<div class="wind-direction">
-	  <p class="sr-only"></p>
+	  <img id='image'></img>
 	</div>
       </div>
       <div class="info">
@@ -108,9 +112,33 @@ console.log(date())
 //Buscar los distintos tiposd de clima y ponerle un background y color diferente.
 
 
-getWeather(cities.santiago[0],cities.santiago[1]);
+//getWeather(cities.santiago[0],cities.santiago[1]);
 //getWeather(cities.coyhaique[0],cities.coyhaique[1]);
 //getWeather(cities.iquique[0],cities.iquique[1]);
+getWeather(cities.valdivia[0],cities.valdivia[1]);
+
+
+document.querySelector(".nav").innerHTML= `<div class=cities></div>`
+
+for(const city in cities){
+  let div = document.createElement("div");
+  div.className = 'city';
+  let cityArr = cities[city]; 
+  let lat = cityArr[0];
+  let lon = cityArr[1];
+  imgInner = `<img src='${cityArr[2]}'></img>`
+   div.innerHTML = imgInner;
+   div.addEventListener("click",function(){
+     document.querySelector(".nav .active").classList.remove("active");
+     div.classList.add("active");
+     //fetchCategoryNews(categories[i]);
+     getWeather(lat,lon);
+    });
+    if(city == 'valdivia'){
+      div.classList.add("active");
+   }
+     document.querySelector(".cities").appendChild(div);
+}
 
 
 //un Buscador que devuelva latitud y long
