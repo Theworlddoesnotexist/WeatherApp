@@ -41,27 +41,43 @@ const getWeather = async (lat,lon) => {
 
 function setStyle(info){
   const root = document.querySelector(':root');
+  const screen = document.getElementsByTagName("body")[0];
+  const bgImage = document.getElementById('image');
   let weather = info.description;
+  let mainWeather = info.main;
+  console.log(mainWeather)
   console.log(weather)
-  if (weather == 'muy nuboso'){
-    document.getElementsByTagName("body")[0].style = "background-image:url('https://images.unsplash.com/photo-1535312720515-ea9a756100ef?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80')"
-    root.style.setProperty('--clr-accent','#f0b596');
-    document.getElementById('image').src="https://www.amcharts.com/wp-content/themes/amcharts4/css/img/icons/weather/animated/cloudy.svg";
-  }
-  if (weather == 'nubes'){
-    document.getElementsByTagName("body")[0].style = "background-image:url('https://www.ngenespanol.com/wp-content/uploads/2018/08/La-primera-imagen-de-la-historia.jpg')"
+
+  if(mainWeather == 'Clouds'){
+    screen.style = "background-image:url('https://www.ngenespanol.com/wp-content/uploads/2018/08/La-primera-imagen-de-la-historia.jpg')"
     root.style.setProperty('--clr-accent','#eccfa1');
-    document.getElementById('image').src="https://www.amcharts.com/wp-content/themes/amcharts4/css/img/icons/weather/animated/cloudy-day-2.svg";
+    bgImage.src="https://www.amcharts.com/wp-content/themes/amcharts4/css/img/icons/weather/animated/cloudy-day-2.svg";
+  }
+  if(mainWeather == 'Rain'){
+    screen.style = "background-image:url('https://images.unsplash.com/photo-1507027682794-35e6c12ad5b4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80')"
+    root.style.setProperty('--clr-accent','#72b9f7');
+    bgImage.src="https://www.amcharts.com/wp-content/themes/amcharts4/css/img/icons/weather/animated/cloudy-day-2.svg";
+  }
+
+  if (weather == 'muy nuboso'){
+    screen.style = "background-image:url('https://images.unsplash.com/photo-1535312720515-ea9a756100ef?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80')"
+    root.style.setProperty('--clr-accent','#f0b596');
+    bgImage.src="https://www.amcharts.com/wp-content/themes/amcharts4/css/img/icons/weather/animated/cloudy.svg";
   }
   if(weather == 'niebla'){
-    document.getElementsByTagName("body")[0].style = "background-image:url('https://images.unsplash.com/photo-1536393350242-a66a98748b5c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80')"
+    screen.style = "background-image:url('https://images.unsplash.com/photo-1536393350242-a66a98748b5c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80')"
     root.style.setProperty('--clr-accent','#898A9E');
-    document.getElementById('image').src="https://www.amcharts.com/wp-content/themes/amcharts4/css/img/icons/weather/animated/cloudy-night-1.svg";
+    bgImage.src="https://www.amcharts.com/wp-content/themes/amcharts4/css/img/icons/weather/animated/cloudy-night-1.svg";
   }
   if (weather == 'nubes dispersas'){
-    document.getElementsByTagName("body")[0].style = "background-image:url('https://images.unsplash.com/photo-1644414889311-614c8c7224fb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80')"
+    screen.style = "background-image:url('https://images.unsplash.com/photo-1644414889311-614c8c7224fb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80')"
     root.style.setProperty('--clr-accent','#a1c5ec');
-    document.getElementById('image').src="https://www.amcharts.com/wp-content/themes/amcharts4/css/img/icons/weather/animated/cloudy-day-1.svg";
+    bgImage.src="https://www.amcharts.com/wp-content/themes/amcharts4/css/img/icons/weather/animated/cloudy-day-1.svg";
+  }
+  if(weather == 'cielo claro'){
+    screen.style = 'background-image:url("https://media.istockphoto.com/photos/landscape-of-the-clear-sky-picture-id826120724?k=20&m=826120724&s=170667a&w=0&h=yF7j7pAQF0eGt75VFWpJkZX6aKkk82Dnw45kr4zTg8E=")';
+    root.style.setProperty('--clr-accent','#6fbcff');
+    bgImage.src="https://www.amcharts.com/wp-content/themes/amcharts4/css/img/icons/weather/animated/cloudy-day-1.svg";
   }
 }
 
@@ -107,8 +123,6 @@ function date(){
   console.log(month);
   return day
 }
-
-console.log(date())
 //Buscar los distintos tiposd de clima y ponerle un background y color diferente.
 
 
@@ -119,6 +133,8 @@ getWeather(cities.valdivia[0],cities.valdivia[1]);
 
 
 document.querySelector(".nav").innerHTML= `<div class=cities></div>`
+
+//Cities menu
 
 for(const city in cities){
   let div = document.createElement("div");
